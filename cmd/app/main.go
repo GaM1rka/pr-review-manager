@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"pr-review-manager/internal/handlers"
 	"pr-review-manager/internal/repository"
+	"pr-review-manager/internal/service"
 	"syscall"
 	"time"
 )
@@ -16,19 +17,21 @@ func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 	dbURL := os.Getenv("DATABASE_URL")
-	db, err := repository.NewStorage(dbURL)
+	storage, err := repository.NewStorage(dbURL)
 	if err != nil {
 		logger.Error("Error while initialization of DB", err)
 	}
+	service := service.NewService(storage)
+	h := handlers.NewHandler(service)
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/team/add", handlers.AddHandler)
-	mux.HandleFunc("/team/get", handlers.GetHandler)
-	mux.HandleFunc("/users/setIsActive", handlers.SetIsActiveHandler)
-	mux.HandleFunc("/users/getReview", handlers.GetReviewHandler)
-	mux.HandleFunc("/pullRequest/create", handlers.CreateHandler)
-	mux.HandleFunc("/pullRequest/merge", handlers.MergeHandler)
-	mux.HandleFunc("/pullRequest/reassign", handlers.ReassignHandler)
+	mux.HandleFunc("/team/add", h.AddHandler)
+	mux.HandleFunc("/team/get", h.GetHandler)
+	mux.HandleFunc("/users/setIsActive", h.SetIsActiveHandler)
+	mux.HandleFunc("/users/getReview", h.GetReviewHandler)
+	mux.HandleFunc("/pullRequest/create", h.CreateHandler)
+	mux.HandleFunc("/pullRequest/merge", h.MergeHandler)
+	mux.HandleFunc("/pullRequest/reassign", h.ReassignHandler)
 
 	server := &http.Server{
 		Addr:    ":8080",
@@ -52,7 +55,7 @@ func main() {
 		logger.Warn("Server forced to shutdown", err)
 	}
 
-	if err := db.Close(); err != nil {
+	if err := storage.Close(); err != nil {
 		logger.Warn("Database close error", err)
 	}
 }
