@@ -4,18 +4,19 @@ import (
 	"time"
 )
 
-// ErrorResponse представляет структуру ответа об ошибке
-type ErrorResponse struct {
-	Message string `json:"message"`
-}
-
 func (e *ErrorResponse) Error() string {
-	return e.Message
+	return e.ErrDetail.Message
 }
 
+// ErrorDetail представляет детали ошибки
 type ErrorDetail struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+}
+
+// ErrorResponse представляет структуру ответа об ошибке
+type ErrorResponse struct {
+	ErrDetail ErrorDetail `json:"error"`
 }
 
 // Team представляет команду с участниками
