@@ -27,12 +27,14 @@ func main() {
 		logger.Error("Failed to initialize DB", err)
 		os.Exit(1)
 	}
+	logger.Info("DB connection established successfully")
 
 	// optional: create tables at startup
 	if err := storage.CreateTables(logger); err != nil {
 		logger.Error("Failed to create tables", err)
 		os.Exit(1)
 	}
+	logger.Info("Tables creation completed")
 
 	svc := service.NewService(storage, logger)
 	h := handlers.NewHandler(svc, logger)
