@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "b3a2f679-4a8e-44ba-ba60-fb07c62584d7",
+		"name": "pr-manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45871286",
+		"_collection_link": "https://amirgabdullin.postman.co/workspace/Amir-Gabdullin's-Workspace~cb1befca-d49d-4b2c-82d6-b3cd5eace3f6/collection/45871286-b3a2f679-4a8e-44ba-ba60-fb07c62584d7?action=share&source=collection_link&creator=45871286"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"team_name\": \"backend\",\n  \"members\": [\n    { \"user_id\": \"u1\", \"username\": \"Alice\", \"is_active\": true },\n    { \"user_id\": \"u2\", \"username\": \"Bob\", \"is_active\": true },\n    { \"user_id\": \"u3\", \"username\": \"Charlie\", \"is_active\": true },\n    { \"user_id\": \"u4\", \"username\": \"Dan\", \"is_active\": true },\n    { \"user_id\": \"u5\", \"username\": \"Eva\", \"is_active\": true }\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/team/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"team",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/team/get?team_name=backend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"team",
+						"get"
+					],
+					"query": [
+						{
+							"key": "team_name",
+							"value": "backend"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"u3\",\n  \"is_active\": false\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/setIsActive",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"setIsActive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pull_request_id\": \"pr-{{id}}\",\n  \"pull_request_name\": \"Feature {{id}}\",\n  \"author_id\": \"u1\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pullRequest/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pullRequest",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pull_request_id\": \"pr-{{id}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pullRequest/merge",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pullRequest",
+						"merge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pull_request_id\": \"pr-{{id}}\",\n  \"old_user_id\": \"u2\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pullRequest/reassign",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pullRequest",
+						"reassign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/users/getReview?user_id=u2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"getReview"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "u2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

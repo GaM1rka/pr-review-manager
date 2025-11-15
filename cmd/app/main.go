@@ -29,7 +29,8 @@ func main() {
 	}
 	logger.Info("DB connection established successfully")
 
-	// optional: create tables at startup
+	// Создание таблиц при старте приложения
+	logger.Info("Creating tables if not exist")
 	if err := storage.CreateTables(logger); err != nil {
 		logger.Error("Failed to create tables", err)
 		os.Exit(1)
@@ -40,6 +41,7 @@ func main() {
 	h := handlers.NewHandler(svc, logger)
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("/stats/users", h.StatsUsersHandler)
 	mux.HandleFunc("/team/add", h.AddHandler)
 	mux.HandleFunc("/team/get", h.GetHandler)
 	mux.HandleFunc("/users/setIsActive", h.SetIsActiveHandler)

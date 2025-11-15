@@ -118,6 +118,11 @@ type PullRequestResponse struct {
 	PR PullRequest `json:"pr"`
 }
 
+// StatsUserResponse представляет статистику по назначениям для пользователей
+type StatsUserResponse struct {
+	Stats map[string]int `json:"stats"`
+}
+
 // Error codes
 const (
 	ErrorCodeTeamExists  = "TEAM_EXISTS"
