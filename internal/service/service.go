@@ -389,3 +389,18 @@ func (s *Service) GetReviewPRs(userID string) (*models.UserReviewResponse, error
 		PullRequests: prs,
 	}, nil
 }
+
+// GetUserStats возвращает статистику по назначениям для пользователей
+func (s *Service) GetUserStats() (*models.StatsUserResponse, error) {
+	if s.logger != nil {
+		s.logger.Info("GetUserStats called")
+	}
+	stats, err := s.storage.ListUserReviewCounts()
+	if err != nil {
+		if s.logger != nil {
+			s.logger.Error("failed to get user stats", slog.Any("err", err))
+		}
+		return nil, fmt.Errorf("failed to get user stats: %w", err)
+	}
+	return &models.StatsUserResponse{Stats: stats}, nil
+}

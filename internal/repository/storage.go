@@ -332,6 +332,30 @@ func (s *Storage) ListPRsByReviewer(userID string) ([]models.PullRequestShort, e
 	return result, nil
 }
 
+// ListUserReviewCounts возвращает словарь user_id -> количество PR, где он назначен ревьюером
+func (s *Storage) ListUserReviewCounts() (map[string]int, error) {
+	rows, err := s.db.Query(`
+        SELECT user_id, COUNT(DISTINCT pull_request_id) AS count
+        FROM reviewers
+        GROUP BY user_id
+    `)
+	if err != nil {
+		return nil, fmt.Errorf("list user review counts: %w", err)
+	}
+	defer rows.Close()
+
+	stats := make(map[string]int)
+	for rows.Next() {
+		var userID string
+		var count int
+		if err := rows.Scan(&userID, &count); err != nil {
+			return nil, fmt.Errorf("scan user count: %w", err)
+		}
+		stats[userID] = count
+	}
+	return stats, nil
+}
+
 // sqlNullTime преобразует время в sql.NullTime (NULL если время нулевое)
 func sqlNullTime(t time.Time) interface{} {
 	if t.IsZero() {

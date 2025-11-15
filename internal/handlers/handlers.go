@@ -245,3 +245,24 @@ func (h *Handler) ReassignHandler(w http.ResponseWriter, r *http.Request) {
 	h.logger.Info("pull request reassigned", slog.String("pr_id", req.PullRequestID), slog.String("replaced_by", replacedBy))
 	writeJSON(w, http.StatusOK, resp)
 }
+
+// StatsUsersHandler handles GET /stats/users
+func (h *Handler) StatsUsersHandler(w http.ResponseWriter, r *http.Request) {
+	h.logger.Info("StatsUsersHandler called", slog.String("remote", r.RemoteAddr))
+
+	resp, err := h.service.GetUserStats()
+	if err != nil {
+		h.logger.Error("AddTeam failed", slog.Any("err", err))
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		_ = json.NewEncoder(w).Encode(models.ErrorResponse{
+			ErrDetail: models.ErrorDetail{
+				Code:    "INTERNAL_ERROR",
+				Message: err.Error(),
+			},
+		})
+		return
+	}
+
+	writeJSON(w, http.StatusOK, resp)
+}

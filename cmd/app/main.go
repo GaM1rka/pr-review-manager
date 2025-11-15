@@ -41,6 +41,7 @@ func main() {
 	h := handlers.NewHandler(svc, logger)
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("/stats/users", h.StatsUsersHandler)
 	mux.HandleFunc("/team/add", h.AddHandler)
 	mux.HandleFunc("/team/get", h.GetHandler)
 	mux.HandleFunc("/users/setIsActive", h.SetIsActiveHandler)
